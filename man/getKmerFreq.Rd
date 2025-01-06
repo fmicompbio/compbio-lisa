@@ -17,7 +17,7 @@ getKmerFreq(
 }
 \arguments{
 \item{seqs}{Set of sequences, either a \code{character} vector or a
-\code{\link{DNAStringSet}}.}
+\code{\link[Biostrings]{DNAStringSet}}.}
 
 \item{kmerLen}{A \code{numeric} scalar giving the k-mer length.}
 

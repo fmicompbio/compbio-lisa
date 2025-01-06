@@ -31,7 +31,7 @@
 #'   \code{MMorder}.
 #'
 #' @param seqs Set of sequences, either a \code{character} vector or a
-#'   \code{\link{DNAStringSet}}.
+#'   \code{\link[Biostrings]{DNAStringSet}}.
 #' @param kmerLen A \code{numeric} scalar giving the k-mer length.
 #' @param MMorder A \code{numeric} scalar giving the order of the Markov model
 #'   used to calculate the expected frequencies.
