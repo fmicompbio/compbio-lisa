@@ -3,7 +3,7 @@ Type: Package
 Title: Binned Motif Enrichment Analysis and Visualization
 Version: 1.13.1
 Authors@R: c(
-    person("Dania", "Machlab", email = "dania.machlab@fmi.ch", role = c("aut"), 
+    person("Dania", "Machlab", email = "dania.machlab@gmail.com", role = c("aut"), 
            comment = c(ORCID = "0000-0002-2578-6930")),
     person("Lukas", "Burger", email = "lukas.burger@fmi.ch", role = c("aut"),
            comment = c(ORCID = "0000-0001-5596-7567")),
