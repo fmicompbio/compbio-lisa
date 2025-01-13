@@ -515,11 +515,11 @@ plotMotifHeatmaps <- function(x,
 #' @param selProbMin A numerical scalar in [0,1]. Predictors with a selection
 #'   probability greater than \code{selProbMin} are shown as colored lines. The
 #'   color is defined by the \code{col} argument.
-#' @param col color of the selected predictors.
-#' @param lwd line width (default = 1).
-#' @param lty line type (default = 1).
-#' @param ylim limits for y-axis (default = c(0,1.1)).
-#' @param ... additional parameters to pass on to \code{matplot}.
+#' @param col vector of colors specifying what to color selected and 
+#'   non-selected predictors.
+#' @param linewidth line widths.
+#' @param alpha line transparency of the stability paths.
+#' @param ylim limits for y-axis.
 #'
 #' @return \code{TRUE} (invisibly).
 #' 
@@ -541,36 +541,57 @@ plotMotifHeatmaps <- function(x,
 #' ss <- randLassoStabSel(x = X, y = Y)
 #' plotStabilityPaths(ss)
 #'
-#' @seealso \code{\link[stabs]{stabsel}} and \code{\link[graphics]{matplot}}
+#' @seealso \code{\link[stabs]{stabsel}}
 #'
 #' @importFrom SummarizedExperiment assay rowData colData
-#' @importFrom graphics matplot
+#' @import ggplot2 
+#' @importFrom tidyr pivot_longer starts_with
 #'
 #' @export
 plotStabilityPaths <- function(se,
                                selProbMin = metadata(se)$stabsel.params.cutoff,
-                               col = "cadetblue", 
-                               lwd = 1, lty = 1, ylim = c(0, 1.1), ...) {
+                               col = c(sel = "cadetblue", notSel = "black"), 
+                               linewidth = 0.5, alpha = 1, ylim = c(0, 1)) {
     # checks
     if (!is(se, "SummarizedExperiment")) {
         stop("'se' must be a SummarizedExperiment")
     }
-
-    # set plot parameters
-    mat <- as.matrix(colData(se))
-    mat <- t(mat[, grep(pattern = "^regStep", x = colnames(mat))])
-    cols <- rep("black", ncol(mat))
-    sel <- se$selProb > selProbMin
-    cols[sel] <- col
+    # check row and colnames are not empty.. and that regStep is in name: regStep is in the name, given by function
+    # check ylim and selProbMin values are in [0,1] and not outside of this
+    # check test functions
+    # major parameter change: col = specifies sel and non-sel colors (both), linewidth param from ggplot2
+    # import starts_with from tidyselect? (add another package dependency officially)
+    names(col)[names(col) == "sel"] <- TRUE
+    names(col)[names(col) == "notSel"] <- FALSE
   
-    # plot stability paths
-    graphics::matplot(mat, col = cols, type = "l", lty = lty,
-            ylab = "Selection Probability", xlab = "Regularization Step",
-            ylim = ylim, lwd = lwd, ...)
-    abline(h = selProbMin, lty = 5, col = "red", lwd = lwd)
-    legend("topleft", legend = c("not selected", "selected", "selProbMin"),
-           col = c("black", col, "red"), lty = c(1, 1, 5), bty = "n", lwd = lwd)
+    # prepare dataframe to plot
+    df <- as.data.frame(colData(se))
+    df$predictor <- rownames(df)
+    df$selected <- df$selProb > selProbMin
+    df <- tidyr::pivot_longer(df, 
+                              cols = tidyr::starts_with(match = "regStep"), 
+                              names_to = "regStep", 
+                              values_to = "selectionProbability")
+    df$regStep <- as.integer(gsub(pattern = "regStep", 
+                                  replacement = "", 
+                                  x = df$regStep))
+    dfCutoff <- data.frame(yintercept = selProbMin, 
+                           cutoff = paste0("selProbMin = ", selProbMin))
     
+    # plot stability paths
+    ggplot(data = df, mapping = aes(x = regStep, y = selectionProbability)) + 
+      geom_line(mapping = aes(group = predictor, color = selected), 
+                linewidth = linewidth, alpha = alpha) + 
+      scale_color_manual(values = col) + 
+      geom_hline(data = dfCutoff, 
+                 mapping = aes(yintercept = yintercept, linetype = cutoff), 
+                 color = "firebrick", linewidth = linewidth) + 
+      labs(x = "Regularization Step", 
+           y = "Selection Probability") + 
+      guides(colour = guide_legend(override.aes = list(alpha = 1))) + 
+      ylim(ylim) + 
+      theme_classic()
+  
     # return TRUE
     invisible(TRUE)
 }
