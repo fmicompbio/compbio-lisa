@@ -44,7 +44,8 @@ Imports:
     GenomeInfoDb,
     tools,
     vioplot,
-    RSQLite
+    RSQLite, 
+    ggplot2
 Suggests: 
     JASPAR2020,
     JASPAR2024,

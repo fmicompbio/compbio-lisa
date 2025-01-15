@@ -578,7 +578,7 @@ plotStabilityPaths <- function(se,
     dfCutoff <- data.frame(yintercept = selProbMin, 
                            cutoff = paste0("selProbMin = ", selProbMin))
     
-    # plot stability paths
+    # plot stability paths (returns ggplot object)
     ggplot(data = df, mapping = aes(x = regStep, y = selectionProbability)) + 
       geom_line(mapping = aes(group = predictor, color = selected), 
                 linewidth = linewidth, alpha = alpha) + 
@@ -592,8 +592,6 @@ plotStabilityPaths <- function(se,
       ylim(ylim) + 
       theme_classic()
   
-    # return TRUE
-    invisible(TRUE)
 }
 
 
