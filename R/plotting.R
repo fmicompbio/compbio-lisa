@@ -521,7 +521,7 @@ plotMotifHeatmaps <- function(x,
 #' @param alpha line transparency of the stability paths.
 #' @param ylim limits for y-axis.
 #'
-#' @return \code{TRUE} (invisibly).
+#' @return a \code{ggplot2} object.
 #' 
 #' @examples 
 #' ## create data set

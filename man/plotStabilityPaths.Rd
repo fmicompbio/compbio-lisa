@@ -7,11 +7,10 @@
 plotStabilityPaths(
   se,
   selProbMin = metadata(se)$stabsel.params.cutoff,
-  col = "cadetblue",
-  lwd = 1,
-  lty = 1,
-  ylim = c(0, 1.1),
-  ...
+  col = c(sel = "cadetblue", notSel = "black"),
+  linewidth = 0.5,
+  alpha = 1,
+  ylim = c(0, 1)
 )
 }
 \arguments{
@@ -22,18 +21,17 @@ selection, by running \code{\link[monaLisa]{randLassoStabSel}}.}
 probability greater than \code{selProbMin} are shown as colored lines. The
 color is defined by the \code{col} argument.}
 
-\item{col}{color of the selected predictors.}
+\item{col}{vector of colors specifying what to color selected and 
+non-selected predictors.}
 
-\item{lwd}{line width (default = 1).}
+\item{linewidth}{line widths.}
 
-\item{lty}{line type (default = 1).}
+\item{alpha}{line transparency of the stability paths.}
 
-\item{ylim}{limits for y-axis (default = c(0,1.1)).}
-
-\item{...}{additional parameters to pass on to \code{matplot}.}
+\item{ylim}{limits for y-axis.}
 }
 \value{
-\code{TRUE} (invisibly).
+a \code{ggplot2} object.
 }
 \description{
 Plot the stability paths of each variable (predictor), 
@@ -59,5 +57,5 @@ plotStabilityPaths(ss)
 
 }
 \seealso{
-\code{\link[stabs]{stabsel}} and \code{\link[graphics]{matplot}}
+\code{\link[stabs]{stabsel}}
 }
