@@ -123,7 +123,7 @@ test_that("plotStabilityPaths() runs", {
     pdf(file = tf)
 
     expect_error(plotStabilityPaths("error"))
-    expect_true(plotStabilityPaths(ss))
+    expect_s3_class(plotStabilityPaths(ss), "ggplot")
 
     dev.off()
     unlink(tf)
