@@ -42,6 +42,7 @@ Imports:
     SummarizedExperiment,
     S4Vectors,
     TFBSTools,
+    tidyr,
     tools,
     utils,
     vioplot,
