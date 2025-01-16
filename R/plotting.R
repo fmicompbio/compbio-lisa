@@ -517,7 +517,7 @@ plotMotifHeatmaps <- function(x,
 #'   color is defined by the \code{col} argument.
 #' @param col vector of colors specifying what to color selected and 
 #'   non-selected predictors.
-#' @param linewidth line widths.
+#' @param linewidth line width.
 #' @param alpha line transparency of the stability paths.
 #' @param ylim limits for y-axis.
 #'
@@ -556,11 +556,18 @@ plotStabilityPaths <- function(se,
     if (!is(se, "SummarizedExperiment")) {
         stop("'se' must be a SummarizedExperiment")
     }
-    # check row and colnames are not empty.. and that regStep is in name: regStep is in the name, given by function
-    # check ylim and selProbMin values are in [0,1] and not outside of this
-    # check test functions
-    # major parameter change: col = specifies sel and non-sel colors (both), linewidth param from ggplot2
-    # import starts_with from tidyselect? (add another package dependency officially)
+    .assertScalar(x = selProbMin, type = "numeric", rngIncl = c(0, 1))
+    .assertVector(x = col, type = "character", len = 2L)
+    .assertScalar(x = linewidth, type = "numeric")
+    .assertScalar(x = alpha, type = "numeric", rngIncl = c(0, 1))
+    .assertVector(x = ylim, type = "numeric", rngIncl = c(0, 1))
+    .assertVector(x = colnames(se), type = "character", len = ncol(se))
+    .assertVector(x = rownames(se), type = "character", len = nrow(se))
+    .assertVector(x = colnames(colData(se)), type = "character")
+    
+    # remaining notes: import starts_with from tidyselect or tidyr? 
+    # ... currently using tidyr, which uses tidyselect, but we do not have the 
+    # ... tidyselect package dependency in monaLisa yet
     names(col)[names(col) == "sel"] <- TRUE
     names(col)[names(col) == "notSel"] <- FALSE
   

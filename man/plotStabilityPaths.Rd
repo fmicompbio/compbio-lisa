@@ -24,7 +24,7 @@ color is defined by the \code{col} argument.}
 \item{col}{vector of colors specifying what to color selected and 
 non-selected predictors.}
 
-\item{linewidth}{line widths.}
+\item{linewidth}{line width.}
 
 \item{alpha}{line transparency of the stability paths.}
 
