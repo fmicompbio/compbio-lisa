@@ -45,17 +45,17 @@ Imports:
     tools,
     utils,
     vioplot,
-    XVector,
+    XVector
 Suggests: 
     BiocStyle, 
     BSgenome.Mmusculus.UCSC.mm10, 
-    gridExtra
+    gridExtra,
     JASPAR2020,
     JASPAR2024,
     knitr, 
     rmarkdown, 
     testthat, 
-    TxDb.Mmusculus.UCSC.mm10.knownGene,
+    TxDb.Mmusculus.UCSC.mm10.knownGene
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: false
